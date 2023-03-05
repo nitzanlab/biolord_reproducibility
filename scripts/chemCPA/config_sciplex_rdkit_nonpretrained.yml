@@ -1,0 +1,88 @@
+# Config for for sci-Plex non- pretrained
+seml:
+  executable: chemCPA/experiments_run.py
+  name: sciplex_run
+  output_dir: sweeps/logs
+  conda_environment: chemical_CPA
+  project_root_dir: /path/to/chemCPA/
+
+slurm:
+  max_simultaneous_jobs: 19
+  experiments_per_job: 3
+  sbatch_options_template: GPU
+  sbatch_options:
+    gres: gpu:1       # num GPUs
+    mem: 32G          # memory
+    cpus-per-task: 6  # num cores
+    # speeds is roughly 3 epochs / minute
+    time: 1-00:01     # max time, D-HH:MM
+    nice: 10000
+###### BEGIN PARAMETER CONFIGURATION ######
+
+fixed:
+  profiling.run_profiler: False
+  profiling.outdir: "./"
+
+  training.checkpoint_freq: 50 # checkpoint frequency to run evaluate, and maybe save checkpoint
+  training.num_epochs: 1 # maximum epochs for training. One epoch updates either autoencoder, or adversary, depending on adversary_steps.
+  training.max_minutes: 1200 # maximum computation time
+  training.full_eval_during_train: False
+  training.run_eval_disentangle: True # whether to calc the disentanglement loss when running the full eval
+  training.run_eval_r2: True
+  training.run_eval_r2_sc: False
+  training.run_eval_logfold: False
+  training.save_checkpoints: True # checkpoints tend to be ~250MB large for LINCS.
+  training.save_dir: /path/to/save/dir/
+  
+  dataset.dataset_type: trapnell
+  dataset.data_params.dataset_path:  /path/to/data/sciplex3_biolord.h5ad # full path to the anndata dataset
+  dataset.data_params.perturbation_key: condition # stores name of the drug
+  dataset.data_params.pert_category: cov_drug_dose_name # stores celltype_drugname_drugdose
+  dataset.data_params.dose_key: dose # stores drug dose as a float
+  dataset.data_params.covariate_keys: cell_type # necessary field for cell types. Fill it with a dummy variable if no celltypes present.
+  dataset.data_params.smiles_key: SMILES
+  dataset.data_params.degs_key: all_DEGs # `uns` column name denoting the DEGs for each perturbation
+  dataset.data_params.split_key: split_ood # `uns` column name denoting the DEGs for each perturbation
+  dataset.data_params.use_drugs_idx: True # If false, will use One-hot encoding instead
+
+  model.load_pretrained: False
+  model.pretrained_model_path: /cs/labs/peleg/nivc/biolord/chemCPA/results/raw/
+  model.pretrained_model_hashes: # seml config_hashes for the pretrained models for each embedding. Used for loading model checkpoints.
+      rdkit: 4f061dbfc7af05cf84f06a724b0c8563
+  model.additional_params.patience: 50 # patience for early stopping. Effective epochs: patience * checkpoint_freq.
+  model.additional_params.decoder_activation: ReLU # last layer of the decoder 'linear' or 'ReLU'
+  model.additional_params.doser_type: amortized # non-linearity for doser function
+  model.embedding.directory: null # null will load the path from paths.py
+
+  model.additional_params.seed: 1337
+
+  # these were picked in the `lincs_rdkit_hparam` experiment
+  model.hparams.dim: 32
+  model.hparams.dropout: 0.262378
+  model.hparams.autoencoder_width: 256
+  model.hparams.autoencoder_depth: 4
+
+  model.hparams.autoencoder_lr:  0.0015751320499779737
+  model.hparams.autoencoder_wd: 6.251373574521742e-7
+  model.hparams.adversary_width: 128
+  model.hparams.adversary_depth: 3
+  model.hparams.adversary_lr: 0.000806
+  model.hparams.adversary_wd: 0.000004
+  model.hparams.adversary_steps: 2 # every X steps, update the adversary INSTEAD OF the autoencoder.
+  model.hparams.reg_adversary: 9.100951626404369
+  model.hparams.reg_adversary_cov: 10.675229346653245
+  model.hparams.penalty_adversary: 0.4550475813202185
+  model.hparams.batch_size: 32
+   
+  model.embedding.model: rdkit
+  model.hparams.dosers_width: 64
+  model.hparams.dosers_depth: 3
+  model.hparams.dosers_lr: 0.001575
+  model.hparams.dosers_wd: 6.251373574521742e-7
+  model.hparams.step_size_lr: 50 # this applies to all optimizers (AE, ADV, DRUG)
+  model.hparams.embedding_encoder_width: 128
+  model.hparams.embedding_encoder_depth: 4
+  model.append_ae_layer: True
+
+  model.enable_cpa_mode: False
+  model.hparams.reg_multi_task: 0.0

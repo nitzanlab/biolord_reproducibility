@@ -1,0 +1,94 @@
+---
+title: "Infected informative genes"
+output: html_document
+date: "2023-02-22"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Import
+```{r}
+library(clusterProfiler)
+library(enrichplot)
+library(org.Mm.eg.db)
+library(graphics)
+library(ggplot2)
+library(msigdbr)
+```
+
+
+## Load Abortive genes
+
+```{r}
+d = read.csv('~/infected_ttest.csv')
+## feature 1: numeric vector
+ordered_genes_status <- (d$statistic)
+names(ordered_genes_status) <- d$X
+ordered_genes_status <- sort(ordered_genes_status, decreasing = TRUE)
+
+```
+
+## Load msigdbr
+
+```{r}
+msig_m <- msigdbr(species = "Mus musculus", category = "H") %>%
+    dplyr::select(gs_name, gene_symbol) %>%
+    dplyr::rename(ont = gs_name, gene = gene_symbol)
+msig_m
+msig_gsea_status <- GSEA(
+  ordered_genes_status, 
+  minGSSize = 25, # Minimum gene set size
+  maxGSSize = 500, # Maximum gene set set
+  pvalueCutoff = 0.05, # p-value cutoff
+  eps = 0, # Boundary for calculating the p value
+  TERM2GENE = msig_m, 
+  pAdjustMethod = "BH",
+  scoreType = "std"
+)
+```
+
+
+```{r}
+pl = dotplot(msig_gsea_status, x="NES", showCategory=20) 
+pl
+```
+
+```{r}
+write.csv(pl$data, "~/hallmark_infected.csv")
+```
+
+
+```{r}
+ordered_genes_status_k <- (d$statistic)
+names(ordered_genes_status_k) <- mapIds(org.Mm.eg.db, d$X, 'ENTREZID', 'SYMBOL')
+ordered_genes_status_k <- sort(ordered_genes_status_k, decreasing = TRUE)
+```
+
+## KEGG
+```{r}
+
+kegg_organism = "mmu"
+kk2 <- gseKEGG(geneList     = ordered_genes_status_k,
+               organism     = kegg_organism,
+               minGSSize    = 25,
+               maxGSSize    = 500,
+               pvalueCutoff = 0.05,
+               nPermSimple = 10000,
+               scoreType = "std",
+               keyType       = "ncbi-geneid")
+
+```
+
+```{r}
+
+pl = dotplot(kk2, showCategory = 10, x="NES", title = "Enriched Pathways" , split=".sign") + facet_grid(.~.sign)
+pl
+```
+```{r}
+write.csv(pl$data, "~/kegg_infected.csv")
+```
+
