@@ -1,6 +1,6 @@
 # biolord's reproducibility repository
 
-This code contains the code to reproduce the results shown in "_Biological representation disentanglement of single-cell data_".
+This code contains the code to reproduce the results shown in ["_Biological representation disentanglement of single-cell data_"](https://www.biorxiv.org/content/10.1101/2023.03.05.531195) (2023).
 
 ## Data availability
 1. perturbation data (sci-Plex 3, [Srivatsan et al. 2020](https://www.science.org/doi/10.1126/science.aax6234)):
