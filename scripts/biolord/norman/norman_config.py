@@ -1,0 +1,30 @@
+import numpy as np
+
+varying_arg = {
+    "seed": 42, 
+    "decoder_width": np.random.choice([32,64,128,256,512]),
+    "decoder_depth": np.random.choice([1, 2, 3, 4, 6, 8]),
+    "use_batch_norm": False,
+    "use_layer_norm": False,
+    "step_size_lr": 45,
+    "attribute_dropout_rate": np.random.choice([0.0, 0.1, 0.25, 0.5, 0.75]),
+    "cosine_scheduler": True,
+    "scheduler_final_lr": 1e-5,
+    "n_latent": 32,
+    "batch_size": 32,
+    "n_latent_attribute_ordered": np.random.choice([32,64,128,256,512]),
+    "n_latent_attribute_categorical": np.random.choice([2, 3, 4, 6, 8]),
+    "reconstruction_penalty": np.random.choice([1e-2, 1e-1, 1e0, 1e1, 1e2, 1e3, 1e4]),
+    "attribute_nn_width": np.random.choice([32, 64, 128, 256, 512]),
+    "attribute_nn_depth": np.random.choice([1, 2, 3, 4, 6, 8]),
+    "attribute_nn_lr": np.random.choice([1e-2, 1e-3, 1e-4]),
+    "attribute_nn_wd": np.random.choice([4e-9, 4e-8, 1e-7]),
+    "latent_lr": np.random.choice([1e-1, 1e-2, 1e-3, 1e-4, 1e-5]),
+    "latent_wd": np.random.choice([1e-2, 1e-3, 1e-4, 1e-5]),
+    "decoder_lr": np.random.choice([1e-2, 1e-3, 1e-4]),
+    "decoder_wd": np.random.choice([1e-2, 1e-3, 1e-4]),
+    "decoder_activation": np.random.choice([True, False]),
+    "attribute_nn_activation": np.random.choice([True, False]),
+    "unknown_attributes": False,
+}
+
