@@ -33,7 +33,7 @@ def train_dataset():
     varying_arg["retrieval_attribute_key"] = None
     varying_arg["split_key"] = "split_ood"
     varying_arg["layer"] = None
-    varying_arg["loss_ae"] = "gauss"
+    varying_arg["gene_likelihood"] = "normal"
 
     varying_arg["dataset_name"] = "sciplex3"
     
