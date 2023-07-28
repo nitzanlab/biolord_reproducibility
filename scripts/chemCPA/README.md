@@ -1,7 +1,7 @@
 ## chemCPA reproducibility
 1. Clone the chemCPA project from `https://github.com/theislab/chemCPA` (commit `a4a4ded0c3b949c64ff1ea51033be1b7c301c36b`; see `chemCPA` modifications)
 2. `cd chemCPA` + `python setup.py install`
-3. Download the sci-Plex 3 data to from [figshare](https://figshare.com/ndownloader/files/39324305) to `./data/perturbation/`
+3. Download the sci-Plex 3 data to from [figshare](https://figshare.com/ndownloader/files/39324305) to `./data/perturbations/sciplex3`
 4. Update  `chemCPA/paths.py` with the correct `PROJECT_DIR`.
 5. Follow the instruction at `chemCPA` to create `rdkit2D_embedding_lincs_trapnell.parquet` and place it under `/chemCPA/embeddings/rdkit/data/embeddings/`. 
 6. In `config_sciplex_rdkit_nonpretrained.yml` or (`config_sciplex_rdkit_pretrained.yml` for the pretrained version): <br>
