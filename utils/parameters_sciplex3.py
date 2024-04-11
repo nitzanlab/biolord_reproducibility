@@ -80,7 +80,7 @@ unknown_attribute_penalty = 1e-1
 cosine_scheduler = True
 train_classifiers = False
 
-loss_ae = "gauss"
+gene_likelihood = "normal"
 n_latent_attribute_ordered = 256
 n_latent_attribute_categorical = 3
 reconstruction_penalty = 1e+4
@@ -102,7 +102,7 @@ module_params = {
     "seed": 42,
     "n_latent_attribute_ordered": n_latent_attribute_ordered,
     "n_latent_attribute_categorical": n_latent_attribute_categorical,
-    "loss_ae": loss_ae,
+    "gene_likelihood": gene_likelihood,
     "reconstruction_penalty": reconstruction_penalty,
     "unknown_attribute_penalty": unknown_attribute_penalty,
     "attribute_dropout_rate": attribute_dropout_rate,
