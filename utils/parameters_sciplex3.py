@@ -89,7 +89,6 @@ scheduler_final_lr = 1e-5
 step_size_lr = 45
 use_batch_norm = False
 use_layer_norm = False
-enable_checkpointing=False
 
 
 module_params = {
@@ -119,6 +118,5 @@ trainer_params = {
     "attribute_nn_wd": attribute_nn_wd,
     "step_size_lr": step_size_lr,
     "cosine_scheduler": cosine_scheduler,
-    "scheduler_final_lr": scheduler_final_lr,
-    "enable_checkpointing": enable_checkpointing
+    "scheduler_final_lr": scheduler_final_lr
 }
